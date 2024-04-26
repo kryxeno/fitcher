@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 interface IInteractible
 {
@@ -20,9 +21,13 @@ public class Interactor : MonoBehaviour
     public InteractionUI InteractionUI;
 
     public bool hasCellarKey = false;
+    public bool hasFoundDiary = false;
 
     public List<Note> notes = new List<Note>();
     public GameObject displayNote;
+    public GameObject displayDiary;
+    public Animator rightHandAnimator;
+    public TwoBoneIKConstraint rightHandBookIK;
 
     private GameObject previousHitObject;
 
@@ -35,7 +40,9 @@ public class Interactor : MonoBehaviour
             {
                 if (previousHitObject != null && previousHitObject != hitInfo.collider.gameObject) ResetOpacity(previousHitObject);
 
-                InteractionUI.SetUp("E", hitInfo.collider.gameObject.transform.position);
+                Transform UIInteractObject = hitInfo.collider.gameObject.transform.Find("UILocation");
+                InteractionUI.SetUp("E", UIInteractObject ? UIInteractObject.position : hitInfo.collider.gameObject.transform.position);
+
                 TurnOnOpacity(hitInfo.collider.gameObject);
 
                 if (Input.GetKeyDown(KeyCode.E))
@@ -56,6 +63,11 @@ public class Interactor : MonoBehaviour
                             notes.Add(newNote);
                             ShowNote(newNote);
                         }
+                    }
+                    if (itemTag == "Diary")
+                    {
+                        ShowDiary();
+                        hasFoundDiary = true;
                     }
                 }
 
@@ -104,8 +116,32 @@ public class Interactor : MonoBehaviour
 
     public void ShowNote(Note note)
     {
+        CloseDiary();
         displayNote.GetComponent<Animator>().SetBool("isActive", true);
+        rightHandAnimator.SetBool("isGrabbing", true);
+        rightHandBookIK.weight = 0f;
         Debug.Log("Note Name: " + note.noteName);
         Debug.Log("Note Text: " + note.noteText);
+    }
+
+    public void CloseNote()
+    {
+        displayNote.GetComponent<Animator>().SetBool("isActive", false);
+        rightHandAnimator.SetBool("isGrabbing", false);
+    }
+
+    public void ShowDiary()
+    {
+        CloseNote();
+        displayDiary.GetComponent<Animator>().SetBool("isActive", true);
+        rightHandAnimator.SetBool("isGrabbing", true);
+        rightHandBookIK.weight = 1f;
+    }
+
+    public void CloseDiary()
+    {
+        displayDiary.GetComponent<Animator>().SetBool("isActive", false);
+        rightHandAnimator.SetBool("isGrabbing", false);
+        rightHandBookIK.weight = 0f;
     }
 }
