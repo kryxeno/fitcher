@@ -30,10 +30,7 @@ public class CutsceneManager : MonoBehaviour
             if (cutscene.name == cutsceneName)
             {
                 Debug.Log("Playing Cutscene: " + cutsceneName);
-                playerController.playerCanMove = !lockPlayerMovement;
-                playerController.cameraCanMove = !lockPlayerMovement;
-                playerController.crosshair = !lockPlayerMovement;
-                playerController.arms.gameObject.SetActive(!lockPlayerMovement);
+                if (lockPlayerMovement) GameEventSystem.instance.playerEvents.CutsceneStart();
                 cutscene.Play();
                 cutscene.stopped += OnCutsceneFinished;
             }
@@ -42,10 +39,7 @@ public class CutsceneManager : MonoBehaviour
 
     void OnCutsceneFinished(PlayableDirector aDirector)
     {
-        playerController.playerCanMove = true;
-        playerController.cameraCanMove = true;
-        playerController.crosshair = true;
-        playerController.arms.gameObject.SetActive(true);
+        GameEventSystem.instance.playerEvents.CutsceneEnd();
         aDirector.stopped -= OnCutsceneFinished;
     }
 

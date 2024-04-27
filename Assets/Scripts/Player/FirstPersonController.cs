@@ -31,7 +31,6 @@ public class FirstPersonController : MonoBehaviour
 
     // Crosshair
     public bool lockCursor = true;
-    public bool crosshair = true;
     public Sprite crosshairImage;
     public Color crosshairColor = Color.white;
 
@@ -163,6 +162,46 @@ public class FirstPersonController : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        GameEventSystem.instance.playerEvents.onEnablePlayerMovement += EnablePlayerMovement;
+        GameEventSystem.instance.playerEvents.onDisablePlayerMovement += DisablePlayerMovement;
+        GameEventSystem.instance.playerEvents.onCutsceneStart += CutsceneStart;
+        GameEventSystem.instance.playerEvents.onCutsceneEnd += CutsceneEnd;
+    }
+
+    private void OnDisable()
+    {
+        GameEventSystem.instance.playerEvents.onEnablePlayerMovement -= EnablePlayerMovement;
+        GameEventSystem.instance.playerEvents.onDisablePlayerMovement -= DisablePlayerMovement;
+        GameEventSystem.instance.playerEvents.onCutsceneStart -= CutsceneStart;
+        GameEventSystem.instance.playerEvents.onCutsceneEnd -= CutsceneEnd;
+    }
+
+    private void EnablePlayerMovement()
+    {
+        playerCanMove = true;
+        cameraCanMove = true;
+    }
+
+    private void DisablePlayerMovement()
+    {
+        playerCanMove = false;
+        cameraCanMove = false;
+    }
+
+    private void CutsceneStart()
+    {
+        DisablePlayerMovement();
+        arms.gameObject.SetActive(false);
+    }
+
+    private void CutsceneEnd()
+    {
+        EnablePlayerMovement();
+        arms.gameObject.SetActive(true);
+    }
+
     void Start()
     {
         if (lockCursor)
@@ -170,15 +209,10 @@ public class FirstPersonController : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
         }
 
-        if (crosshair)
-        {
-            crosshairObject.sprite = crosshairImage;
-            crosshairObject.color = crosshairColor;
-        }
-        else
-        {
-            crosshairObject.gameObject.SetActive(false);
-        }
+
+        crosshairObject.sprite = crosshairImage;
+        crosshairObject.color = crosshairColor;
+
 
         #region Sprint Bar
 
@@ -238,12 +272,6 @@ public class FirstPersonController : MonoBehaviour
 
             transform.localEulerAngles = new Vector3(0, yaw, 0);
             head.localEulerAngles = new Vector3(pitch, 0, 0);
-        }
-
-        bool crosshairActive = crosshairObject.gameObject.activeSelf;
-        if (crosshair != crosshairActive)
-        {
-            crosshairObject.gameObject.SetActive(crosshair);
         }
 
         #region Camera Zoom
