@@ -35,13 +35,15 @@ public class QuestLogUI : MonoBehaviour
         {
             firstSelectedButton = questLogButton.button;
         }
+
+        questLogButton.SetState(quest.state);
     }
 
     private void SetQuestLogInfo(Quest quest)
     {
         questDisplayNameText.text = quest.info.displayName;
 
-        // TODO - status text
+        questStatusText.text = quest.GetFullStatusText();
 
         questRequirementsText.text = "";
         foreach (QuestInfoSO questPrerequisite in quest.info.questPrerequisites)
