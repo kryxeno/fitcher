@@ -21,7 +21,7 @@ public class CutsceneManager : MonoBehaviour
                 cutscenes.Add(child.GetComponent<PlayableDirector>());
             }
         }
-        PlayCutscene("IntroCutscene", true);
+        // PlayCutscene("IntroCutscene", true);
     }
 
     public void PlayCutscene(string cutsceneName, bool lockPlayerMovement)
