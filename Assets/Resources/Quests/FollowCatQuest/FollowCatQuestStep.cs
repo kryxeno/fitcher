@@ -16,6 +16,9 @@ public class FollowCatQuestStep : QuestStep
         {
             string status = "You found the cat!";
             ChangeState("", status);
+
+            GameEventSystem.instance.cutsceneEvents.PlayCutscene("StudyCutscene", true);
+
             FinishQuestStep();
         }
     }

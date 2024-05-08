@@ -262,6 +262,7 @@ public class FirstPersonController : MonoBehaviour
                 {
                     isZoomed = false;
                 }
+                else isZoomed = false;
             }
 
             // Lerps camera.FieldOfView to allow for a smooth transistion

@@ -70,4 +70,13 @@ public class InteractorEvents
             onOpenCellarDoor();
         }
     }
+
+    public event Action onSolveMorse;
+    public void SolveMorse()
+    {
+        if (onSolveMorse != null)
+        {
+            onSolveMorse();
+        }
+    }
 }

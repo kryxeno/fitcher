@@ -15,6 +15,7 @@ public class DecodeMessageStep : QuestStep
         if (other.CompareTag("Player"))
         {
             FinishQuestStep();
+            GameEventSystem.instance.interactorEvents.SolveMorse();
         }
     }
 
