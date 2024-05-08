@@ -14,6 +14,7 @@ public class CutsceneManager : MonoBehaviour
 
     private PlayableDirector currentCutscene;
     private float timer = 0f;
+    private bool canSkipCutscene = false;
 
     private void OnEnable()
     {
@@ -44,6 +45,7 @@ public class CutsceneManager : MonoBehaviour
         {
             if (cutscene.name == cutsceneName)
             {
+                canSkipCutscene = false;
                 Debug.Log("Playing Cutscene: " + cutsceneName);
                 if (lockPlayerMovement) GameEventSystem.instance.playerEvents.CutsceneStart();
                 cutscene.Play();
@@ -58,9 +60,12 @@ public class CutsceneManager : MonoBehaviour
         GameEventSystem.instance.playerEvents.CutsceneEnd();
         aDirector.stopped -= OnCutsceneFinished;
         currentCutscene = null;
+        if (aDirector.name == "IntroCutscene")
+        {
+            AudioManager.instance.Play("Ambiance");
+        }
     }
 
-    private bool canSkipCutscene = false;
 
     void Update()
     {

@@ -1,5 +1,5 @@
 ﻿// CHANGE LOG
-// 
+//
 // CHANGES || version VERSION
 //
 // "Enable/Disable Headbob, Changed look rotations - should result in reduced camera jitters" || version 1.0.1
@@ -131,6 +131,7 @@ public class FirstPersonController : MonoBehaviour
     // Internal Variables
     private Vector3 jointOriginalPos;
     private Vector3 armsOriginalPosition;
+    private Vector3 armsOriginalScale;
     private float timer = 0;
 
     #endregion
@@ -144,6 +145,7 @@ public class FirstPersonController : MonoBehaviour
         originalScale = transform.localScale;
         jointOriginalPos = joint.localPosition;
         armsOriginalPosition = arms.localPosition;
+        armsOriginalScale = arms.localScale;
 
         if (!unlimitedSprint)
         {
@@ -183,13 +185,13 @@ public class FirstPersonController : MonoBehaviour
     private void CutsceneStart()
     {
         DisablePlayerMovement();
-        arms.gameObject.SetActive(false);
+        arms.localScale = new Vector3(0, 0, 0);
     }
 
     private void CutsceneEnd()
     {
         EnablePlayerMovement();
-        arms.gameObject.SetActive(true);
+        arms.localScale = armsOriginalScale;
     }
 
     void Start()
@@ -206,8 +208,18 @@ public class FirstPersonController : MonoBehaviour
 
     float camRotation;
 
+    private bool isPaused = false;
     private void Update()
     {
+        #region Camera
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            if (isPaused) EnablePlayerMovement();
+            else DisablePlayerMovement();
+        }
+
+        #endregion
+
         #region Camera
 
         // Control camera movement
@@ -305,7 +317,7 @@ public class FirstPersonController : MonoBehaviour
                 sprintRemaining = Mathf.Clamp(sprintRemaining += 1 * Time.deltaTime, 0, sprintDuration);
             }
 
-            // Handles sprint cooldown 
+            // Handles sprint cooldown
             // When sprint remaining == 0 stops sprint ability until hitting cooldown
             if (isSprintCooldown)
             {

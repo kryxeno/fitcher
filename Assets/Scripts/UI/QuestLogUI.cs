@@ -76,12 +76,14 @@ public class QuestLogUI : MonoBehaviour
         if (questLogPanel.activeInHierarchy)
         {
             questLogPanel.SetActive(false);
+            Cursor.lockState = CursorLockMode.Locked;
             GameEventSystem.instance.playerEvents.EnablePlayerMovement();
             EventSystem.current.SetSelectedGameObject(null);
         }
         else
         {
             questLogPanel.SetActive(true);
+            Cursor.lockState = CursorLockMode.None;
             GameEventSystem.instance.playerEvents.DisablePlayerMovement();
             if (firstSelectedButton != null) firstSelectedButton.Select();
         }

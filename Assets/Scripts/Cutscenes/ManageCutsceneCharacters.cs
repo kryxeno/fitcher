@@ -4,19 +4,7 @@ using UnityEngine;
 
 public class ManageCutsceneCharacters : MonoBehaviour
 {
-    private GameObject[] cutsceneCharacters;
-
-    private void Start()
-    {
-        // Assuming the GameObjects you want to store are direct children of the current GameObject
-        int childCount = transform.childCount;
-        cutsceneCharacters = new GameObject[childCount];
-
-        for (int i = 0; i < childCount; i++)
-        {
-            cutsceneCharacters[i] = transform.GetChild(i).gameObject;
-        }
-    }
+    public GameObject[] cutsceneCharacters;
 
     private void OnEnable()
     {
@@ -40,8 +28,6 @@ public class ManageCutsceneCharacters : MonoBehaviour
 
     private void CutsceneEnd()
     {
-        AudioManager.instance.Play("Ambiance");
-
         foreach (GameObject character in cutsceneCharacters)
         {
             character.SetActive(false);
