@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92d251c7680ee7d4d9c940fc1edcdf59, type: 3}
+  m_Name: ExploreHouseQuest
+  m_EditorClassIdentifier: 
+  <id>k__BackingField: ExploreHouseQuest
+  displayName: Explore the house
+  questPrerequisites:
+  - {fileID: 11400000, guid: 79c3dbdc259843b42b3bf77eeb307538, type: 2}
+  questStepPrefabs:
+  - {fileID: 2608231897132594828, guid: c85ef97584b5c7846b04e843cfcc58a2, type: 3}
+  - {fileID: 6198926636742708785, guid: 9d068a091866a27418b757d3ecc2c26d, type: 3}
+  - {fileID: 6198926636742708785, guid: 8972b4eb76d6c8b4eb6bde83528f2860, type: 3}
+  - {fileID: 6472106964933826453, guid: a83e2c82fcb5de243af1c8652416b49a, type: 3}
+  - {fileID: 6198926636742708785, guid: d81c2f302304fae409bc0892261deb58, type: 3}
+  - {fileID: 6198926636742708785, guid: 692b771767d2f3e43ad4b0358862bfbb, type: 3}

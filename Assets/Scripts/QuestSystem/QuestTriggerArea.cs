@@ -57,4 +57,9 @@ public class QuestTriggerArea : MonoBehaviour
             }
         }
     }
+
+    public void ForceStartQuest()
+    {
+        GameEventSystem.instance.questEvents.StartQuest(questId);
+    }
 }

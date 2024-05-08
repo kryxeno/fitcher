@@ -9,6 +9,7 @@ public class GameEventSystem : MonoBehaviour
 
     public QuestEvents questEvents;
     public PlayerEvents playerEvents;
+    public InteractorEvents interactorEvents;
 
     private void Awake()
     {
@@ -23,5 +24,6 @@ public class GameEventSystem : MonoBehaviour
 
         questEvents = new QuestEvents();
         playerEvents = new PlayerEvents();
+        interactorEvents = new InteractorEvents();
     }
 }

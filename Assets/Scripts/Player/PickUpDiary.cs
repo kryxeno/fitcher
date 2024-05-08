@@ -4,10 +4,15 @@ using UnityEngine;
 
 public class PickUpDiary : MonoBehaviour, IInteractible
 {
-    public string Interact()
+    public void Interact()
     {
         Debug.Log("Diary Picked Up");
         gameObject.SetActive(false);
-        return gameObject.tag ?? "Object";
+        GameEventSystem.instance.interactorEvents.ShowDiary();
+    }
+
+    private void OnDestroy()
+    {
+        GameEventSystem.instance.interactorEvents.ShowDiary();
     }
 }

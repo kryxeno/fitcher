@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class PickUpKey : MonoBehaviour, IInteractible
 {
-    public string Interact()
+    public void Interact()
     {
         Debug.Log("Key Picked Up");
         gameObject.SetActive(false);
-        return gameObject.tag ?? "Object";
+        GameEventSystem.instance.interactorEvents.PickUpKey();
     }
 }

@@ -5,13 +5,7 @@ using UnityEngine.Animations.Rigging;
 
 interface IInteractible
 {
-    public string Interact();
-}
-
-public class Note
-{
-    public string noteName;
-    public string noteText;
+    public void Interact();
 }
 
 public class Interactor : MonoBehaviour
@@ -19,16 +13,6 @@ public class Interactor : MonoBehaviour
     public Transform InteractorSource;
     public float InteractorRange = 1f;
     public InteractionUI InteractionUI;
-
-    public bool hasCellarKey = false;
-    public bool hasFoundDiary = false;
-
-    public List<Note> notes = new List<Note>();
-    public GameObject displayNote;
-    public GameObject displayDiary;
-    public Animator rightHandAnimator;
-    public TwoBoneIKConstraint rightHandBookIK;
-
     private GameObject previousHitObject;
 
     void Update()
@@ -47,28 +31,8 @@ public class Interactor : MonoBehaviour
 
                 if (Input.GetKeyDown(KeyCode.E))
                 {
-                    string itemTag = interactObj.Interact();
-
-                    if (itemTag == "CellarKey") hasCellarKey = true;
-                    if (itemTag == "Note")
-                    {
-                        PickUpNote note = hitInfo.collider.gameObject.GetComponent<PickUpNote>();
-                        if (note != null)
-                        {
-                            Note newNote = new Note
-                            {
-                                noteName = note.noteName,
-                                noteText = note.noteText
-                            };
-                            notes.Add(newNote);
-                            ShowNote(newNote);
-                        }
-                    }
-                    if (itemTag == "Diary")
-                    {
-                        ShowDiary();
-                        hasFoundDiary = true;
-                    }
+                    interactObj.Interact();
+                    AudioManager.instance.Play("Click");
                 }
 
                 previousHitObject = hitInfo.collider.gameObject;
@@ -112,36 +76,5 @@ public class Interactor : MonoBehaviour
         renderer.GetPropertyBlock(propertyBlock);
         propertyBlock.SetFloat("_Opacity", 1f);
         renderer.SetPropertyBlock(propertyBlock);
-    }
-
-    public void ShowNote(Note note)
-    {
-        CloseDiary();
-        displayNote.GetComponent<Animator>().SetBool("isActive", true);
-        rightHandAnimator.SetBool("isGrabbing", true);
-        rightHandBookIK.weight = 0f;
-        Debug.Log("Note Name: " + note.noteName);
-        Debug.Log("Note Text: " + note.noteText);
-    }
-
-    public void CloseNote()
-    {
-        displayNote.GetComponent<Animator>().SetBool("isActive", false);
-        rightHandAnimator.SetBool("isGrabbing", false);
-    }
-
-    public void ShowDiary()
-    {
-        CloseNote();
-        displayDiary.GetComponent<Animator>().SetBool("isActive", true);
-        rightHandAnimator.SetBool("isGrabbing", true);
-        rightHandBookIK.weight = 1f;
-    }
-
-    public void CloseDiary()
-    {
-        displayDiary.GetComponent<Animator>().SetBool("isActive", false);
-        rightHandAnimator.SetBool("isGrabbing", false);
-        rightHandBookIK.weight = 0f;
     }
 }

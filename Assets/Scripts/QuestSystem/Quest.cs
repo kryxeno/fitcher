@@ -118,4 +118,16 @@ public class Quest
         }
         return fullStatusText;
     }
+
+    public string GetCurrentQuestStepText()
+    {
+        if (CurrentStepExists())
+        {
+            return questStepStates[currentQuestStepIndex].status;
+        }
+        else
+        {
+            return "No status available.";
+        }
+    }
 }

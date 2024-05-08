@@ -71,6 +71,8 @@ public class QuestManager : MonoBehaviour
             if (quest.state == QuestState.REQUIREMENTS_NOT_MET && CheckRequirementsMet(quest))
             {
                 ChangeQuestState(quest.info.id, QuestState.CAN_START);
+                StartQuest(quest.info.id);
+                Debug.Log("Starting quest: " + quest.info.id);
                 break;
             }
         }
@@ -79,6 +81,11 @@ public class QuestManager : MonoBehaviour
     public void StartQuest(string questId)
     {
         Quest quest = GetQuestById(questId);
+        if (quest.state != QuestState.CAN_START)
+        {
+            Debug.LogError("Cannot start quest: " + questId);
+            return;
+        }
         quest.InstantiateCurrentQuestStep(this.transform);
         ChangeQuestState(quest.info.id, QuestState.IN_PROGRESS);
     }
@@ -94,7 +101,7 @@ public class QuestManager : MonoBehaviour
         }
         else
         {
-            ChangeQuestState(quest.info.id, QuestState.CAN_FINISH);
+            ChangeQuestState(quest.info.id, QuestState.FINISHED);
         }
     }
 

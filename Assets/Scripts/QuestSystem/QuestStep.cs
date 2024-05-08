@@ -18,13 +18,13 @@ public abstract class QuestStep : MonoBehaviour
         }
     }
 
-    protected void FinishQuestStep()
+    protected void FinishQuestStep(bool destroy = true)
     {
         if (!isFinished)
         {
             isFinished = true;
             GameEventSystem.instance.questEvents.AdvanceQuest(questId);
-            Destroy(this.gameObject);
+            if (destroy) Destroy(this.gameObject);
         }
     }
 
