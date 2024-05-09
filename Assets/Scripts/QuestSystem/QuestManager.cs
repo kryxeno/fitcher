@@ -98,10 +98,12 @@ public class QuestManager : MonoBehaviour
         if (quest.CurrentStepExists())
         {
             quest.InstantiateCurrentQuestStep(this.transform);
+            AudioManager.instance.Play("QuestUpdated");
         }
         else
         {
             ChangeQuestState(quest.info.id, QuestState.FINISHED);
+            AudioManager.instance.Play("QuestCompleted");
         }
     }
 

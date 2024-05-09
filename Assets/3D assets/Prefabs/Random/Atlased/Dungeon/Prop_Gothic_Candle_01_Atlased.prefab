@@ -257,7 +257,7 @@ PrefabInstance:
     - target: {fileID: 7590641042179993545, guid: a8631dd9655a76e4298ba27146a76e21,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.4624026
+      value: 0.1305
       objectReference: {fileID: 0}
     - target: {fileID: 7590641042179993545, guid: a8631dd9655a76e4298ba27146a76e21,
         type: 3}
@@ -358,6 +358,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: FX_Fire
+      objectReference: {fileID: 0}
+    - target: {fileID: 7590641043792337055, guid: a8631dd9655a76e4298ba27146a76e21,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

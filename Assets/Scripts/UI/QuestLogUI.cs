@@ -51,7 +51,13 @@ public class QuestLogUI : MonoBehaviour
         firstSelectedButton = questLogButton.button;
 
         questLogButton.SetState(quest.state);
-        currentQuestStepText.text = quest.GetCurrentQuestStepText();
+        if (currentQuestStepText.text != quest.GetCurrentQuestStepText() && quest.state == QuestState.IN_PROGRESS)
+        {
+            currentQuestStepText.text = quest.GetCurrentQuestStepText();
+            Debug.Log("Updating quest step text");
+            Debug.Log(quest.GetCurrentQuestStepText());
+            currentQuestStepText.gameObject.GetComponent<Animator>().SetTrigger("Update");
+        }
     }
 
 
