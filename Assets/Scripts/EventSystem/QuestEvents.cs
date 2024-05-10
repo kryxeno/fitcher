@@ -54,4 +54,13 @@ public class QuestEvents
             onQuestStepStateChange(id, stepIndex, questStepState);
         }
     }
+
+    public event Action onCellarPOIFound;
+    public void CellarPOIFound()
+    {
+        if (onCellarPOIFound != null)
+        {
+            onCellarPOIFound();
+        }
+    }
 }

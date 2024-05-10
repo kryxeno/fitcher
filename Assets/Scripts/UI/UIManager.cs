@@ -15,7 +15,7 @@ public class UIManager : MonoBehaviour
 
     public void Start()
     {
-        HideUI();
+        ClearSubtitles();
     }
 
     private void OnEnable()
@@ -23,6 +23,8 @@ public class UIManager : MonoBehaviour
         GameEventSystem.instance.playerEvents.onCutsceneStart += HideUI;
         GameEventSystem.instance.playerEvents.onCutsceneEnd += ShowUI;
         GameEventSystem.instance.interactorEvents.onPickUpKey += PickUpKey;
+        GameEventSystem.instance.cutsceneEvents.onShowSubtitles += ShowSubtitles;
+        GameEventSystem.instance.cutsceneEvents.onClearSubtitles += ClearSubtitles;
     }
 
     private void OnDisable()
@@ -30,6 +32,8 @@ public class UIManager : MonoBehaviour
         GameEventSystem.instance.playerEvents.onCutsceneStart -= HideUI;
         GameEventSystem.instance.playerEvents.onCutsceneEnd -= ShowUI;
         GameEventSystem.instance.interactorEvents.onPickUpKey -= PickUpKey;
+        GameEventSystem.instance.cutsceneEvents.onShowSubtitles -= ShowSubtitles;
+        GameEventSystem.instance.cutsceneEvents.onClearSubtitles -= ClearSubtitles;
     }
 
     private void HideUI()
@@ -52,12 +56,41 @@ public class UIManager : MonoBehaviour
         skipText.SetActive(false);
         foreach (Transform child in subtitleUI.transform)
         {
-            child.gameObject.GetComponent<TextMeshProUGUI>().text = "";
+            TextMeshProUGUI editText = child.gameObject.GetComponent<TextMeshProUGUI>();
+            editText.text = "";
+            editText.color = new Color(1, 1, 1, 0);
+
         }
+    }
+
+    private void ShowSubtitles(string subtitle, string narrator)
+    {
+        Debug.Log("Showing subtitles: " + subtitle + " by " + narrator);
+        TextMeshProUGUI narratorText = subtitleUI.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+        TextMeshProUGUI subtitleText = subtitleUI.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+        narratorText.text = narrator;
+        narratorText.color = GetNarratorColor(narrator);
+        subtitleText.text = subtitle;
+        subtitleText.color = new Color(1, 1, 1, 1);
     }
 
     private void PickUpKey()
     {
         keyImage.color = new Color(1, 1, 1, 1);
+    }
+
+    public Color GetNarratorColor(string narrator)
+    {
+        switch (narrator)
+        {
+            case "Emilia":
+                return new Color(0.8f, 0.2f, 0.2f);
+            case "John":
+                return new Color(0.2f, 0.2f, 0.8f);
+            case "Narrator":
+                return new Color(0.2f, 0.8f, 0.2f);
+            default:
+                return new Color(0.8f, 0.8f, 0.8f);
+        }
     }
 }

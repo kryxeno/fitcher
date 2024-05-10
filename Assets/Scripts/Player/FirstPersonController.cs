@@ -128,6 +128,8 @@ public class FirstPersonController : MonoBehaviour
     public float bobSpeed = 10f;
     public Vector3 bobAmount = new Vector3(.15f, .05f, 0f);
 
+    public Transform cellarPosition;
+
     // Internal Variables
     private Vector3 jointOriginalPos;
     private Vector3 armsOriginalPosition;
@@ -160,6 +162,7 @@ public class FirstPersonController : MonoBehaviour
         GameEventSystem.instance.playerEvents.onDisablePlayerMovement += DisablePlayerMovement;
         GameEventSystem.instance.playerEvents.onCutsceneStart += CutsceneStart;
         GameEventSystem.instance.playerEvents.onCutsceneEnd += CutsceneEnd;
+        GameEventSystem.instance.playerEvents.onUpdatePlayerPosition += UpdatePlayerPosition;
     }
 
     private void OnDisable()
@@ -168,6 +171,7 @@ public class FirstPersonController : MonoBehaviour
         GameEventSystem.instance.playerEvents.onDisablePlayerMovement -= DisablePlayerMovement;
         GameEventSystem.instance.playerEvents.onCutsceneStart -= CutsceneStart;
         GameEventSystem.instance.playerEvents.onCutsceneEnd -= CutsceneEnd;
+        GameEventSystem.instance.playerEvents.onUpdatePlayerPosition -= UpdatePlayerPosition;
     }
 
     private void EnablePlayerMovement()
@@ -188,6 +192,7 @@ public class FirstPersonController : MonoBehaviour
     {
         DisablePlayerMovement();
         arms.localScale = new Vector3(0, 0, 0);
+        UpdateCandle(false);
     }
 
     private void CutsceneEnd(string cutsceneName)
@@ -204,17 +209,26 @@ public class FirstPersonController : MonoBehaviour
 
     float camRotation;
 
+    private void UpdatePlayerPosition(string position)
+    {
+        if (position == "Cellar")
+        {
+            transform.position = cellarPosition.position;
+            transform.rotation = cellarPosition.rotation;
+        }
+    }
+
     private bool isPaused = false;
     private void Update()
     {
-        #region TEST
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            if (isPaused) EnablePlayerMovement();
-            else DisablePlayerMovement();
-        }
+        // #region TEST
+        // if (Input.GetKeyDown(KeyCode.P))
+        // {
+        //     if (isPaused) EnablePlayerMovement();
+        //     else DisablePlayerMovement();
+        // }
 
-        #endregion
+        // #endregion
 
 
 
@@ -343,9 +357,7 @@ public class FirstPersonController : MonoBehaviour
         if (canUseCandle && Input.GetKeyDown(KeyCode.F))
         {
             bool currentValue = candle.GetComponent<Animator>().GetBool("candleActive");
-            candle.GetComponent<Animator>().SetBool("candleActive", !currentValue);
-
-            leftHand.SetBool("candleActive", !currentValue);
+            UpdateCandle(!currentValue);
         }
         #endregion
 
@@ -511,6 +523,12 @@ public class FirstPersonController : MonoBehaviour
 
             isCrouched = true;
         }
+    }
+
+    private void UpdateCandle(bool value)
+    {
+        candle.GetComponent<Animator>().SetBool("candleActive", value);
+        leftHand.SetBool("candleActive", value);
     }
 
     private int footstepCount = 0;

@@ -62,4 +62,14 @@ public class PlayerEvents
             onShutUpCat();
         }
     }
+
+    public event Action<string> onUpdatePlayerPosition;
+
+    public void UpdatePlayerPosition(string position)
+    {
+        if (onUpdatePlayerPosition != null)
+        {
+            onUpdatePlayerPosition(position);
+        }
+    }
 }

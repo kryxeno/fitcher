@@ -31,20 +31,35 @@ public class SubtitleTrackMixer : PlayableBehaviour
         text.text = currentText + ":";
         if (currentText == "John")
         {
-            text.color = new Color(1, 0, 0, currentAlpha);
+            text.color = GetNarratorColor("John", currentAlpha);
         }
         else if (currentText == "Emilia")
         {
-            text.color = new Color(0, 1, 0, currentAlpha);
+            text.color = GetNarratorColor("Emilia", currentAlpha);
         }
-        else if (currentText == "Cat")
+        else if (currentText == "Narrator")
         {
-            text.color = new Color(0, 0, 1, currentAlpha);
+            text.color = GetNarratorColor("Narrator", currentAlpha);
         }
         else
         {
             text.text = currentText;
             text.color = new Color(1, 1, 1, currentAlpha);
+        }
+    }
+
+    public Color GetNarratorColor(string narrator, float alpha = 1f)
+    {
+        switch (narrator)
+        {
+            case "Emilia":
+                return new Color(0.8f, 0.2f, 0.2f, alpha);
+            case "John":
+                return new Color(0.2f, 0.2f, 0.8f, alpha);
+            case "Narrator":
+                return new Color(0.2f, 0.8f, 0.2f, alpha);
+            default:
+                return new Color(0.8f, 0.8f, 0.8f, alpha);
         }
     }
 }

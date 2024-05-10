@@ -11,6 +11,7 @@ public class ReadDiaryStep : QuestStep
     {
         UpdateState();
         pagesRead[0] = 1;
+        // AudioManager.instance.PlayNarration("DiaryPage1");
     }
 
     private void OnEnable()
@@ -25,6 +26,7 @@ public class ReadDiaryStep : QuestStep
 
     private void PageRead(int page)
     {
+        // if (pagesRead[page] != 1) AudioManager.instance.PlayNarration("DiaryPage" + (page + 1));
         pagesRead[page] = 1;
         CheckPagesRead();
     }

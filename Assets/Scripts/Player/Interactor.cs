@@ -67,6 +67,8 @@ public class Interactor : MonoBehaviour
         renderer.GetPropertyBlock(propertyBlock);
         propertyBlock.SetFloat("_Opacity", 0f);
         renderer.SetPropertyBlock(propertyBlock);
+        // Debug.Log("Stopping Interact UI");
+
     }
 
     void TurnOnOpacity(GameObject obj)
@@ -76,5 +78,6 @@ public class Interactor : MonoBehaviour
         renderer.GetPropertyBlock(propertyBlock);
         propertyBlock.SetFloat("_Opacity", 1f);
         renderer.SetPropertyBlock(propertyBlock);
+        // Debug.Log("Showing Interact UI");
     }
 }

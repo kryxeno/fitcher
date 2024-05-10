@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class OpenMusicBox : MonoBehaviour, IInteractible
 {
+    public AudioSource musicBoxAudio;
     public void Interact()
     {
         gameObject.SetActive(false);
         transform.parent.Find("box-open").gameObject.SetActive(true);
-        transform.parent.gameObject.GetComponent<AudioSource>().Stop();
+        musicBoxAudio.Stop();
+        AudioManager.instance.PlayNarration("Musicbox");
         Destroy(gameObject.GetComponent<OpenMusicBox>());
     }
 }
