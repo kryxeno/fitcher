@@ -174,12 +174,14 @@ public class FirstPersonController : MonoBehaviour
     {
         playerCanMove = true;
         cameraCanMove = true;
+        enableHeadBob = true;
     }
 
     private void DisablePlayerMovement()
     {
         playerCanMove = false;
         cameraCanMove = false;
+        enableHeadBob = false;
     }
 
     private void CutsceneStart()
@@ -188,7 +190,7 @@ public class FirstPersonController : MonoBehaviour
         arms.localScale = new Vector3(0, 0, 0);
     }
 
-    private void CutsceneEnd()
+    private void CutsceneEnd(string cutsceneName)
     {
         EnablePlayerMovement();
         arms.localScale = armsOriginalScale;
@@ -196,12 +198,6 @@ public class FirstPersonController : MonoBehaviour
 
     void Start()
     {
-        if (lockCursor)
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-        }
-
-
         crosshairObject.sprite = crosshairImage;
         crosshairObject.color = crosshairColor;
     }
@@ -211,7 +207,7 @@ public class FirstPersonController : MonoBehaviour
     private bool isPaused = false;
     private void Update()
     {
-        #region Camera
+        #region TEST
         if (Input.GetKeyDown(KeyCode.P))
         {
             if (isPaused) EnablePlayerMovement();
@@ -219,6 +215,13 @@ public class FirstPersonController : MonoBehaviour
         }
 
         #endregion
+
+
+
+        if (enableHeadBob && isWalking)
+        {
+
+        }
 
         #region Camera
 
@@ -270,12 +273,12 @@ public class FirstPersonController : MonoBehaviour
                 {
                     isZoomed = true;
                 }
-                else if (Input.GetKeyUp(zoomKey))
+                else if (!Input.GetKey(zoomKey))
                 {
                     isZoomed = false;
                 }
-                else isZoomed = false;
             }
+
 
             // Lerps camera.FieldOfView to allow for a smooth transistion
             if (isZoomed)
@@ -510,6 +513,9 @@ public class FirstPersonController : MonoBehaviour
         }
     }
 
+    private int footstepCount = 0;
+    private int[] completedFootsteps = new int[0];
+    private bool hasStepped;
     private void HeadBob()
     {
 
@@ -533,6 +539,56 @@ public class FirstPersonController : MonoBehaviour
             // Applies HeadBob movement
             joint.localPosition = new Vector3(jointOriginalPos.x + Mathf.Sin(timer) * bobAmount.x, jointOriginalPos.y + Mathf.Sin(timer) * bobAmount.y, jointOriginalPos.z + Mathf.Sin(timer) * bobAmount.z);
             arms.localPosition = new Vector3(armsOriginalPosition.x + Mathf.Sin(timer) * bobAmount.x / 4, armsOriginalPosition.y + Mathf.Sin(timer) * bobAmount.y / 4, armsOriginalPosition.z + Mathf.Sin(timer) * bobAmount.z / 4);
+
+            if (Mathf.Sin(timer) > 0.9f && !hasStepped)
+            {
+                hasStepped = true;
+
+                if (completedFootsteps.Length == 0)
+                {
+                    // Generate a shuffled list of footstep indices
+                    List<int> shuffledFootsteps = new List<int>();
+                    for (int i = 0; i < 6; i++)
+                    {
+                        shuffledFootsteps.Add(i);
+                    }
+                    shuffledFootsteps = ShuffleList(shuffledFootsteps);
+                    completedFootsteps = shuffledFootsteps.ToArray();
+                    footstepCount = 0;
+                }
+
+                int footstepIndex = completedFootsteps[footstepCount];
+                AudioManager.instance.Play("step" + (footstepIndex + 1));
+                footstepCount++;
+
+                // Reset footstep count and regenerate shuffled list if all footsteps have been played
+                if (footstepCount >= completedFootsteps.Length)
+                {
+                    completedFootsteps = new int[0];
+                    footstepCount = 0;
+                }
+
+            }
+            if (Mathf.Sin(timer) <= 0.9f)
+            {
+                hasStepped = false;
+            }
+
+            // Function to shuffle a list
+            List<T> ShuffleList<T>(List<T> list)
+            {
+                System.Random rng = new System.Random();
+                int n = list.Count;
+                while (n > 1)
+                {
+                    n--;
+                    int k = rng.Next(n + 1);
+                    T value = list[k];
+                    list[k] = list[n];
+                    list[n] = value;
+                }
+                return list;
+            }
         }
         else
         {

@@ -14,6 +14,8 @@ public class ReturnToStudyStep : QuestStep
     {
         if (other.CompareTag("Player"))
         {
+            GameEventSystem.instance.interactorEvents.UnlockDoor("BedroomDoor");
+            GameEventSystem.instance.playerEvents.MoveCat(3);
             FinishQuestStep();
         }
     }

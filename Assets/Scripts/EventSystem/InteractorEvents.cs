@@ -79,4 +79,13 @@ public class InteractorEvents
             onSolveMorse();
         }
     }
+
+    public event Action<string> onUnlockDoor;
+    public void UnlockDoor(string doorName = "")
+    {
+        if (onUnlockDoor != null)
+        {
+            onUnlockDoor(doorName);
+        }
+    }
 }

@@ -36,7 +36,7 @@ public class CutsceneManager : MonoBehaviour
                 cutscenes.Add(child.GetComponent<PlayableDirector>());
             }
         }
-        PlayCutscene("IntroCutscene", true);
+        // PlayStartingCutscene()
     }
 
     public void PlayCutscene(string cutsceneName, bool lockPlayerMovement)
@@ -57,12 +57,13 @@ public class CutsceneManager : MonoBehaviour
 
     void OnCutsceneFinished(PlayableDirector aDirector)
     {
-        GameEventSystem.instance.playerEvents.CutsceneEnd();
+        GameEventSystem.instance.playerEvents.CutsceneEnd(aDirector.name);
         aDirector.stopped -= OnCutsceneFinished;
         currentCutscene = null;
         if (aDirector.name == "IntroCutscene")
         {
             AudioManager.instance.Play("Ambiance");
+            GameEventSystem.instance.questEvents.StartQuest("FollowCatQuest");
         }
     }
 

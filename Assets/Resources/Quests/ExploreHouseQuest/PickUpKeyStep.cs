@@ -16,6 +16,7 @@ public class PickUpKeyStep : QuestStep, IInteractible
         gameObject.SetActive(false);
         string status = "You picked up the key.";
         ChangeState("", status);
+        GameEventSystem.instance.interactorEvents.UnlockDoor("CellarDoor");
         GameEventSystem.instance.interactorEvents.PickUpKey();
         FinishQuestStep();
     }

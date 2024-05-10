@@ -39,7 +39,7 @@ public class QuestTriggerArea : MonoBehaviour
         if (quest.info.id == questId)
         {
             currentQuestState = quest.state;
-            Debug.Log("Quest state changed to: " + currentQuestState);
+            // Debug.Log("Quest state changed to: " + currentQuestState);
         }
     }
 

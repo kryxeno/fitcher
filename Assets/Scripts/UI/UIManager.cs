@@ -13,6 +13,11 @@ public class UIManager : MonoBehaviour
     public RawImage keyImage;
     public bool UIHidden = false;
 
+    public void Start()
+    {
+        HideUI();
+    }
+
     private void OnEnable()
     {
         GameEventSystem.instance.playerEvents.onCutsceneStart += HideUI;
@@ -34,7 +39,7 @@ public class UIManager : MonoBehaviour
         UIHidden = true;
     }
 
-    private void ShowUI()
+    private void ShowUI(string cutsceneName)
     {
         genericUI.SetActive(true);
         crosshairUI.SetActive(true);

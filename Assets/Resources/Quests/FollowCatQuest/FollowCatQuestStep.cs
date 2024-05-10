@@ -10,17 +10,31 @@ public class FollowCatQuestStep : QuestStep
         UpdateState();
     }
 
+    private void OnEnable()
+    {
+        GameEventSystem.instance.playerEvents.onCutsceneEnd += FinishStep;
+    }
+
+    private void OnDisable()
+    {
+        GameEventSystem.instance.playerEvents.onCutsceneEnd -= FinishStep;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             string status = "You found the cat!";
             ChangeState("", status);
+            GameEventSystem.instance.playerEvents.MoveCat(1);
 
             GameEventSystem.instance.cutsceneEvents.PlayCutscene("StudyCutscene", true);
-
-            FinishQuestStep();
         }
+    }
+
+    private void FinishStep(string questStep)
+    {
+        if (questStep == "StudyCutscene") FinishQuestStep();
     }
 
     private void UpdateState()

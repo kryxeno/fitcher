@@ -16,6 +16,8 @@ public class QuestLogUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI questRequirementsText;
 
     [SerializeField] private TextMeshProUGUI currentQuestStepText;
+    private int currentQuestStepIndex;
+    private string currentQuestId;
 
 
     private Button firstSelectedButton;
@@ -51,15 +53,20 @@ public class QuestLogUI : MonoBehaviour
         firstSelectedButton = questLogButton.button;
 
         questLogButton.SetState(quest.state);
-        if (currentQuestStepText.text != quest.GetCurrentQuestStepText() && quest.state == QuestState.IN_PROGRESS)
+
+        if (ShouldUpdateQuestText(quest))
         {
+            currentQuestStepIndex = quest.currentQuestStepIndex;
+            currentQuestId = quest.info.id;
             currentQuestStepText.text = quest.GetCurrentQuestStepText();
-            Debug.Log("Updating quest step text");
-            Debug.Log(quest.GetCurrentQuestStepText());
             currentQuestStepText.gameObject.GetComponent<Animator>().SetTrigger("Update");
         }
     }
 
+    private bool ShouldUpdateQuestText(Quest quest)
+    {
+        return (quest.currentQuestStepIndex != currentQuestStepIndex || quest.info.id != currentQuestId) && quest.GetCurrentQuestStepText() != "" && quest.GetCurrentQuestStepText() != null;
+    }
 
 
     private void SetQuestLogInfo(Quest quest)

@@ -71,6 +71,7 @@ public class QuestManager : MonoBehaviour
             if (quest.state == QuestState.REQUIREMENTS_NOT_MET && CheckRequirementsMet(quest))
             {
                 ChangeQuestState(quest.info.id, QuestState.CAN_START);
+                if (quest.info.id == "FollowCatQuest") return;
                 StartQuest(quest.info.id);
                 Debug.Log("Starting quest: " + quest.info.id);
                 break;

@@ -34,12 +34,32 @@ public class PlayerEvents
         }
     }
 
-    public event Action onCutsceneEnd;
-    public void CutsceneEnd()
+    public event Action<string> onCutsceneEnd;
+    public void CutsceneEnd(string cutsceneName = "")
     {
         if (onCutsceneEnd != null)
         {
-            onCutsceneEnd();
+            onCutsceneEnd(cutsceneName);
+        }
+    }
+
+    public event Action<int> onMoveCat;
+
+    public void MoveCat(int transformIndex)
+    {
+        if (onMoveCat != null)
+        {
+            onMoveCat(transformIndex);
+        }
+    }
+
+    public event Action onShutUpCat;
+
+    public void ShutUpCat()
+    {
+        if (onShutUpCat != null)
+        {
+            onShutUpCat();
         }
     }
 }

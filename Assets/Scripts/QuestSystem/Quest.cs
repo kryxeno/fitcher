@@ -127,7 +127,7 @@ public class Quest
         }
         else
         {
-            return "No status available.";
+            return null;
         }
     }
 }

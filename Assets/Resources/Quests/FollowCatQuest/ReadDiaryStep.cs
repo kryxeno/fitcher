@@ -43,6 +43,10 @@ public class ReadDiaryStep : QuestStep
 
         if (allPagesRead)
         {
+            string status = "You read the diary. A page seems to be ripped out.";
+            ChangeState("", status);
+            GameEventSystem.instance.playerEvents.MoveCat(2);
+            GameEventSystem.instance.interactorEvents.UnlockDoor("ArtroomDoor");
             FinishQuestStep();
         }
     }

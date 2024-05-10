@@ -5,32 +5,30 @@ using UnityEngine;
 public class OpenDoor : MonoBehaviour, IInteractible
 {
     public bool isLocked = true;
-    public bool isCellarDoor;
+    public string doorName;
+
 
     private void OnEnable()
     {
-        GameEventSystem.instance.interactorEvents.onPickUpKey += UnlockCellarDoor;
+        GameEventSystem.instance.interactorEvents.onUnlockDoor += UnlockDoor;
     }
 
     private void OnDisable()
     {
-        GameEventSystem.instance.interactorEvents.onPickUpKey -= UnlockCellarDoor;
+        GameEventSystem.instance.interactorEvents.onUnlockDoor -= UnlockDoor;
     }
 
-    private void UnlockCellarDoor()
+    private void UnlockDoor(string _doorName)
     {
-        if (isCellarDoor)
-        {
-            isLocked = false;
-        }
+        if (_doorName == doorName) isLocked = false;
     }
 
     public void Interact()
     {
-        if (isCellarDoor && !isLocked)
+        if (doorName == "CellarDoor" && !isLocked)
         {
             Debug.Log("Cellar door opened!");
-            // GameEventSystem.instance.interactorEvents.EnterCellar();
+            GameEventSystem.instance.interactorEvents.OpenCellarDoor();
             AudioManager.instance.Play("DoorOpening");
             gameObject.GetComponent<Animator>().SetTrigger("Open");
             return;

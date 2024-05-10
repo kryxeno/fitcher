@@ -26,7 +26,7 @@ public class ManageCutsceneCharacters : MonoBehaviour
         }
     }
 
-    private void CutsceneEnd()
+    private void CutsceneEnd(string cutsceneName)
     {
         foreach (GameObject character in cutsceneCharacters)
         {
