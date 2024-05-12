@@ -10,7 +10,7 @@ public class OpenMusicBox : MonoBehaviour, IInteractible
         gameObject.SetActive(false);
         transform.parent.Find("box-open").gameObject.SetActive(true);
         musicBoxAudio.Stop();
-        AudioManager.instance.PlayNarration("Musicbox");
+        if (PlayerPrefs.GetInt("CellarDoorFound") == 1) AudioManager.instance.PlayNarration("RustyKey");
         Destroy(gameObject.GetComponent<OpenMusicBox>());
     }
 }

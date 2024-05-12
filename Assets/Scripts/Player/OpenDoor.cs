@@ -27,6 +27,11 @@ public class OpenDoor : MonoBehaviour, IInteractible
     {
         if (doorName == "CellarDoor" && !isLocked)
         {
+            // if (PlayerPrefs.GetInt("RegularPOI") != 3)
+            // {
+            //     AudioManager.instance.PlayNarration("StillMissing");
+            //     return;
+            // }
             Debug.Log("Cellar door opened!");
             GameEventSystem.instance.interactorEvents.OpenCellarDoor();
             AudioManager.instance.Play("DoorOpening");

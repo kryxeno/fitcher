@@ -28,4 +28,9 @@ public class GameEventSystem : MonoBehaviour
         interactorEvents = new InteractorEvents();
         cutsceneEvents = new CutsceneEvents();
     }
+
+    private void Start()
+    {
+        PlayerPrefs.SetInt("RegularPOI", 0);
+    }
 }

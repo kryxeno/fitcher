@@ -25,6 +25,7 @@ public class OpenCellarDoorStep : QuestStep
     {
         string status = "You opened the cellar door.";
         ChangeState("", status);
+        AudioManager.instance.PlayNarration("FindOut");
 
         GameEventSystem.instance.cutsceneEvents.PlayCutscene("WalkDownCellarCutscene", true);
     }
