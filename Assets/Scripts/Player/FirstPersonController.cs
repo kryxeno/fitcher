@@ -127,6 +127,7 @@ public class FirstPersonController : MonoBehaviour
     public Transform joint;
     public float bobSpeed = 10f;
     public Vector3 bobAmount = new Vector3(.15f, .05f, 0f);
+    public bool isInjured;
 
     public Transform cellarPosition;
 
@@ -199,6 +200,8 @@ public class FirstPersonController : MonoBehaviour
     {
         EnablePlayerMovement();
         arms.localScale = armsOriginalScale;
+
+        if (cutsceneName == "WalkDownCellarCutscene") isInjured = true;
     }
 
     void Start()
@@ -525,6 +528,23 @@ public class FirstPersonController : MonoBehaviour
         }
     }
 
+    private bool injuredApplied;
+    private void Injured()
+    {
+        if (isInjured)
+        {
+            walkSpeed *= speedReduction;
+            playerCamera.m_Lens.Dutch = -5;
+            injuredApplied = true;
+        }
+        else
+        {
+            walkSpeed /= speedReduction;
+            playerCamera.m_Lens.Dutch = 0;
+            injuredApplied = false;
+        };
+    }
+
     private void UpdateCandle(bool value)
     {
         candle.GetComponent<Animator>().SetBool("candleActive", value);
@@ -536,7 +556,8 @@ public class FirstPersonController : MonoBehaviour
     private bool hasStepped;
     private void HeadBob()
     {
-
+        if (isInjured && !injuredApplied) Injured();
+        else if (!isInjured && injuredApplied) Injured();
         if (isWalking)
         {
             // Calculates HeadBob speed during sprint
@@ -554,9 +575,14 @@ public class FirstPersonController : MonoBehaviour
             {
                 timer += Time.deltaTime * bobSpeed;
             }
+
+            Vector3 adjustedBobAmount = bobAmount;
+
+            if (isInjured) adjustedBobAmount = new Vector3(bobAmount.x * 1.5f, bobAmount.y * 1.5f, bobAmount.z * 1.5f);
+
             // Applies HeadBob movement
-            joint.localPosition = new Vector3(jointOriginalPos.x + Mathf.Sin(timer) * bobAmount.x, jointOriginalPos.y + Mathf.Sin(timer) * bobAmount.y, jointOriginalPos.z + Mathf.Sin(timer) * bobAmount.z);
-            arms.localPosition = new Vector3(armsOriginalPosition.x + Mathf.Sin(timer) * bobAmount.x / 4, armsOriginalPosition.y + Mathf.Sin(timer) * bobAmount.y / 4, armsOriginalPosition.z + Mathf.Sin(timer) * bobAmount.z / 4);
+            joint.localPosition = new Vector3(jointOriginalPos.x + Mathf.Sin(timer) * adjustedBobAmount.x, jointOriginalPos.y + Mathf.Sin(timer) * adjustedBobAmount.y, jointOriginalPos.z + Mathf.Sin(timer) * adjustedBobAmount.z);
+            arms.localPosition = new Vector3(armsOriginalPosition.x + Mathf.Sin(timer) * adjustedBobAmount.x / 4, armsOriginalPosition.y + Mathf.Sin(timer) * adjustedBobAmount.y / 4, armsOriginalPosition.z + Mathf.Sin(timer) * adjustedBobAmount.z / 4);
 
             if (Mathf.Sin(timer) > 0.9f && !hasStepped)
             {
@@ -587,10 +613,7 @@ public class FirstPersonController : MonoBehaviour
                 }
 
             }
-            if (Mathf.Sin(timer) <= 0.9f)
-            {
-                hasStepped = false;
-            }
+            if (Mathf.Sin(timer) <= 0.9f) hasStepped = false;
 
             // Function to shuffle a list
             List<T> ShuffleList<T>(List<T> list)

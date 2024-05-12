@@ -31,6 +31,7 @@ public class OpenDoor : MonoBehaviour, IInteractible
             GameEventSystem.instance.interactorEvents.OpenCellarDoor();
             AudioManager.instance.Play("DoorOpening");
             gameObject.GetComponent<Animator>().SetTrigger("Open");
+            gameObject.GetComponent<BoxCollider>().enabled = false;
             return;
         }
         if (isLocked)
@@ -40,6 +41,7 @@ public class OpenDoor : MonoBehaviour, IInteractible
         }
         AudioManager.instance.Play("DoorOpening");
         gameObject.GetComponent<Animator>().SetTrigger("Open");
+        gameObject.GetComponent<BoxCollider>().enabled = false;
         Destroy(gameObject.GetComponent<OpenDoor>());
     }
 }

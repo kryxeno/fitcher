@@ -24,13 +24,13 @@ public class ExitCellarStep : QuestStep
     {
         if (other.CompareTag("Player"))
         {
-            GameEventSystem.instance.cutsceneEvents.PlayCutscene("ExitCellar", true);
+            GameEventSystem.instance.cutsceneEvents.PlayCutscene("EndCutscene", true);
         }
     }
 
     private void FinishThisStep(string cutsceneName)
     {
-        if (cutsceneName == "ExitCellar") FinishQuestStep();
+        if (cutsceneName == "EndCutscene") Application.Quit();
     }
 
     private void UpdateState()
